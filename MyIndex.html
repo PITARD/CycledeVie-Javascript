@@ -10,17 +10,32 @@
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.0/angular-ui-router.js"></script>
+  <script type="text/javascript" src="http://cdn.jsdelivr.net/restangular/latest/restangular.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.js"></script>
+
+
+
 
   <script type="text/javascript">
 
-  angular.module('myApp', ['ui.router'])
+  angular.module('myApp', ['ui.router', 'restangular'])
   .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/birth');
 
     $stateProvider
       .state('birth', {
         url: '/birth',
-        template: '<div>You are borned<br><button ui-sref="birth.childhood">childhood</button><div ui-view></div></div>',
+        template: '<div>{{textRestAngular}}You are borned<br><button ui-sref="birth.childhood">childhood</button><div ui-view></div></div>',
+        resolve:{
+          textRestAngular : function(Restangular){
+            Restangular.setBaseUrl('http://foaas.com/shakespeare/');
+            return Restangular.one('Kevin', 'Ton père').get();
+          }
+        },
+        controller:function($scope, textRestAngular){
+          $scope.textRestAngular = textRestAngular.message;
+          console.log(textRestAngular);
+        }
       })
       .state('birth.childhood', {
         url: '/childhood',
@@ -60,7 +75,7 @@
     }
   });
 
-  
+
   </script>
   </body>
 
