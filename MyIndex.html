@@ -25,15 +25,15 @@
     $stateProvider
       .state('birth', {
         url: '/birth',
-        template: '<div>{{textRestAngular}}You are borned<br><button ui-sref="birth.childhood">childhood</button><div ui-view></div></div>',
+        template: '<div>{{textRestAngular}}<br>You are borned<br><button ui-sref="birth.childhood">childhood</button><div ui-view></div></div>',
         resolve:{
           textRestAngular : function(Restangular){
             Restangular.setBaseUrl('http://foaas.com/shakespeare/');
-            return Restangular.one('Kevin', 'Ton père').get();
+            return Restangular.one('Kevin', 'Dad').get();
           }
         },
         controller:function($scope, textRestAngular){
-          $scope.textRestAngular = textRestAngular.message;
+          $scope.textRestAngular = textRestAngular.message + textRestAngular.subtitle;
           console.log(textRestAngular);
         }
       })
